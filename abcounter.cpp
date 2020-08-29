@@ -1,13 +1,13 @@
-#include <eosio/eosio.hpp>
+#include <arisen/arisen.hpp>
 
-using namespace eosio;
+using namespace arisen;
 
-class [[eosio::contract("abcounter")]] abcounter : public eosio::contract {
+class [[arisen::contract("abcounter")]] abcounter : public arisen::contract {
   public:
 
     abcounter(name receiver, name code,  datastream<const char*> ds): contract(receiver, code, ds) {}
 
-    [[eosio::action]]
+    [[arisen::action]]
     void count(name user, std::string type) {
       require_auth( name("addressbook"));
       count_index counts(get_first_receiver(), get_first_receiver().value);
@@ -33,7 +33,7 @@ class [[eosio::contract("abcounter")]] abcounter : public eosio::contract {
     using count_action = action_wrapper<"count"_n, &abcounter::count>;
 
   private:
-    struct [[eosio::table]] counter {
+    struct [[arisen::table]] counter {
       name key;
       uint64_t emplaced;
       uint64_t modified;
@@ -41,5 +41,5 @@ class [[eosio::contract("abcounter")]] abcounter : public eosio::contract {
       uint64_t primary_key() const { return key.value; }
     };
 
-    using count_index = eosio::multi_index<"counts"_n, counter>;
+    using count_index = arisen::multi_index<"counts"_n, counter>;
 };
